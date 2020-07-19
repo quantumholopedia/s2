@@ -1,2 +1,5 @@
-.vscode
-build
+.DS_Store
+.vscode/*
+bin/*
+build/*
+!build.sh
