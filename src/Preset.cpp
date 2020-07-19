@@ -9,14 +9,14 @@ S2::Preset::Preset(const Options & options, std::istream & contents)
 		throw IOError("Cannot load preset");
 
 	std::string line;
-	while (std::getline(contents, line))
+	while (S2::getline(contents, line))
 	{
 		bool startsWithQuote = line[0] == '\"';
 		bool endsWithQuote = line.back() == '\"';
 		while (startsWithQuote && !endsWithQuote)
 		{
 			std::string nextLine;
-			if (!std::getline(contents, nextLine))
+			if (!S2::getline(contents, nextLine)) {
 				throw IOError("Underterminated quote");
 			line += "\n";
 			line += nextLine;

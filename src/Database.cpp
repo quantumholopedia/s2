@@ -22,7 +22,7 @@ void S2::DatabaseVisitor::DatabaseFile(int & row, const std::string & filename)
 void S2::DatabaseVisitor::DatabaseFile(int & row, std::istream & file)
 {
 	std::string line;
-	while(std::getline(file, line))
+	while(S2::getline(file, line))
 	{
 		DatabaseRow(row++, line);
 	}

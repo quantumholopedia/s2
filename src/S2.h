@@ -28,6 +28,20 @@ namespace S2
 		DeviceNotFound();
 	};
 
+	template <typename CharT, typename Traits = std::char_traits <CharT>, typename Allocator = std::allocator <CharT>>
+	std::basic_istream <CharT, Traits> &getline (std::basic_istream <CharT, Traits> &istream, std::basic_string <CharT, Traits, Allocator> &line) {
+		auto &result = std::getline (istream, line);
+		std::cerr << line.length () << " -> ";
+		auto const lineEnd = line.find_last_not_of ("\r\n");
+		if (lineEnd == std::basic_string <CharT, Traits, Allocator>::npos) {
+			line.clear ();
+		} else if (lineEnd < line.length () - 1) {
+			line.erase (lineEnd);
+		}
+		std::cerr << line.length () << std::endl;
+		return result;
+	}
+
 	int PulseCommand(const Options&, ProgressMonitor &pm, StreamFactory &sf);
 	int StatusCommand(const Options&, ProgressMonitor &pm, StreamFactory &sf);
 	int Main(int argc, const char*argv[]);

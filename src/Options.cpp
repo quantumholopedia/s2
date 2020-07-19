@@ -99,7 +99,7 @@ void S2::Options::Visit(OptionsVisitor&visitor) const
 void S2::Options::VisitFile(std::istream & file, OptionsVisitor & visitor) const
 {
 	std::string line;
-	while (std::getline(file, line))
+	while (S2::getline(file, line))
 		visitor.OnOption(line.c_str());
 }
 

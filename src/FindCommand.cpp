@@ -32,7 +32,7 @@ void VisitPrograms(const S2::Options & options, Fn fn)
 	std::ifstream file(programsCsv);
 	std::string line;
 	int lineNo=0;
-	while(std::getline(file, line))
+	while(S2::getline(file, line))
 	{
 		++lineNo;
 		fn(lineNo, line);
@@ -62,7 +62,7 @@ public:
 		std::ifstream file(programsCsv);
 		std::string line;
 		int id=0;
-		while(std::getline(file, line))
+		while(S2::getline(file, line))
 		{
 			++id;
 			if(contains(line, f))
