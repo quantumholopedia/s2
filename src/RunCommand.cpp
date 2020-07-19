@@ -8,7 +8,7 @@
 // !! Into class
 class Runner : public S2::OptionsVisitor
 {
-	int generator, channel;
+	int generator = 0, channel = 0;
 	S2::MultiChannelSequence scheduler;
 	S2::Database database;
 	const S2::Options & options;
@@ -26,7 +26,7 @@ public:
 
 		scheduler.Begin();
 
-		S2::ChannelState state;
+		auto state = S2::ChannelState (S2::ChannelId (generator, channel));
 		timeval t0;
 		gettimeofday(&t0, nullptr);
 		bool loop = options.loop;
@@ -50,14 +50,14 @@ public:
 			}
 
 			// Channel & c =
-			auto &channel = devices.GetGenerator(state.channelId.first).GetChannel(state.channelId.second);
+			auto &channel = devices.GetGenerator(state.getChannelId ().first).GetChannel(state.getChannelId ().second);
 
 			if(!std::isnan(state.amplitude))
 				channel.Amplitude(state.amplitude);
 			if(!std::isnan(state.frequency))
 				channel.Frequency(state.frequency);
 
-			pm.GeneratorState(state.time, state.channelId, state.amplitude, state.frequency, state.waveform);
+			pm.GeneratorState(state.time, state.getChannelId (), state.amplitude, state.frequency, state.waveform);
 
 			//std::cout << state.channelId.first << "." << state.channelId.second << " " << state.time << "s " // << state.frequencyHz << "Hz\n";
 		}

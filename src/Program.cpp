@@ -178,8 +178,7 @@ void S2::MultiChannelSequence::Begin()
 	heap.reserve(sequences.size());
 	for(auto & p : sequences)
 	{
-		ChannelState state;
-		state.channelId = p.first;
+		auto state = ChannelState (p.first);
 		state.time = 0;
 		p.second->GetState(0, state);
 		heap.push_back(state);
@@ -197,10 +196,9 @@ bool S2::MultiChannelSequence::Next(ChannelState & state, double stepSize, bool 
 	if(heap.empty()) return false;
 	state = heap.front();
 	std::pop_heap(heap.begin(), heap.end());
-	ChannelState newState;
-	newState.channelId = state.channelId;
+	auto newState = ChannelState (state.getChannelId ());
 	newState.time = state.time + (state.stepDuration==0.0 ? stepSize : state.stepDuration);
-	auto & sequence = sequences[state.channelId];
+	auto & sequence = sequences[state.getChannelId ()];
 	auto duration = sequence->Duration();
 	double timestamp = newState.time;
 	if(loop)

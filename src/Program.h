@@ -3,12 +3,45 @@
 
 namespace S2
 {
-	typedef std::pair<int,int> ChannelId;
+	struct ChannelId: public std::pair<int,int> {
+		ChannelId (int generator, int channel, std::string const &caller, std::string const &caller_file, int caller_line): std::pair <int, int> (generator, channel) {
+			if (channel > 2) {
+				std::cerr << this << ": invalid channel " << channel << std::endl;
+				std::cerr << "Constructor called from " << caller << " (" << caller_file << ":" << caller_line << ")"<< std::endl;
+			}
+		}
+	};
+#define ChannelId(_generator, _channel) ChannelId (_generator, _channel, __PRETTY_FUNCTION__, __FILE__, __LINE__)
 
 	// The desired state
 	struct ChannelState
 	{
+	private:
 		ChannelId channelId;
+	public:
+		ChannelState (ChannelId channelId, std::string const &caller, std::string const &caller_file, int caller_line): channelId (channelId) {
+			if (channelId.second > 2) {
+				std::cerr << this << ": invalid channelId (" << channelId.first << ", " << channelId.second << ")" << std::endl;
+				std::cerr << "Constructor called from " << caller << " (" << caller_file << ":" << caller_line << ")"<< std::endl;
+			}
+		}
+
+		ChannelId getChannelId (std::string const &caller, std::string const &caller_file, int caller_line) const {
+			if (channelId.second > 2) {
+				std::cerr << this << ": invalid channelId (" << channelId.first << ", " << channelId.second << ")" << std::endl;
+				std::cerr << "Getter called from " << caller << " (" << caller_file << ":" << caller_line << ")"<< std::endl;
+			}
+			return channelId;
+		}
+
+		void setChannelId (ChannelId chanelId, std::string const &caller, std::string const &caller_file, int caller_line) {
+			if (channelId.second > 2) {
+				std::cerr << this << ": invalid channelId (" << channelId.first << ", " << channelId.second << ")" << std::endl;
+				std::cerr << "Setter called from " << caller << " (" << caller_file << ":" << caller_line << ")"<< std::endl;
+			}
+			this->channelId = chanelId;
+		}
+
 		double time;	// Seconds from begining
 
 		bool output;	// Whether the output is on or off
@@ -27,6 +60,9 @@ namespace S2
 		double stepDuration;
 		bool operator<(const ChannelState & other) const;
 	};
+#define ChannelState(_channel) ChannelState (_channel, __PRETTY_FUNCTION__, __FILE__, __LINE__)
+#define getChannelId() getChannelId (__PRETTY_FUNCTION__, __FILE__, __LINE__)
+#define setChannelId(_channel) setChannelId (_channel, __PRETTY_FUNCTION__, __FILE__, __LINE__)
 
 
 	// A sequence of commands
