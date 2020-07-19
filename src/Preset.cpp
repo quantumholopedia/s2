@@ -1,6 +1,7 @@
 #include "S2.h"
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 S2::Preset::Preset(const Options & options, std::istream & contents)
@@ -8,16 +9,23 @@ S2::Preset::Preset(const Options & options, std::istream & contents)
 	if (!contents)
 		throw IOError("Cannot load preset");
 
+	std::size_t line_number = 0;
 	std::string line;
 	while (S2::getline(contents, line))
 	{
+		line_number++;
 		bool startsWithQuote = line[0] == '\"';
 		bool endsWithQuote = line.back() == '\"';
 		while (startsWithQuote && !endsWithQuote)
 		{
 			std::string nextLine;
 			if (!S2::getline(contents, nextLine)) {
-				throw IOError("Underterminated quote");
+ 				std::ostringstream formattedMsg;
+				formattedMsg << "Line " << line_number << ": underterminated quote" << std::endl;
+				formattedMsg << line;
+				throw IOError(formattedMsg.str ().c_str ());
+			}
+			line_number++;
 			line += "\n";
 			line += nextLine;
 			endsWithQuote = line.back() == '\"';

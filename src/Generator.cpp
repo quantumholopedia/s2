@@ -224,8 +224,11 @@ S2::Channel & S2::Generator::GetChannel(int channel)
 			sync = Off;
 		}
 		return channel2;
-	default:
-		throw std::logic_error("Invalid channel specified");
+	default: {
+		std::ostringstream formattedMsg;
+		formattedMsg << "Invalid channel specified: " << channel;
+		throw std::logic_error(formattedMsg.str ().c_str ());
+	}
 	}
 }
 
