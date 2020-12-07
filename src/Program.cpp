@@ -1,7 +1,11 @@
 #include "S2.h"
 #include <cstring>
+#include <string>
 #include <cmath>
 #include <cassert>
+#include <iostream>
+#include <algorithm>
+#include <vector>
 
 S2::Program::Program(const Options & options, const std::string & c) : Code(options), code(c)
 {

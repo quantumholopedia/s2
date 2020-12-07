@@ -1,4 +1,6 @@
 #include "S2.h"
+#include <algorithm>
+#include <cstring>
 #include <fstream>
 #include <cctype>
 

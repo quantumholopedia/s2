@@ -60,10 +60,4 @@ target_link_libraries(s2 s2core)
 
 install (TARGETS s2 DESTINATION bin)
 
-add_executable(unittests 
-	tests/Tests.cpp
-	tests/Options.cpp
-	tests/Tests.h
-	)
-
-target_link_libraries(unittests s2core)
+target_link_libraries(s2core)
